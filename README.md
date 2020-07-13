@@ -6,6 +6,10 @@ This solution periodically checks the battery level and charging status of my la
 - If the laptop needs charging a switch on request is sent to my tp-link plug
 - If the laptop is fully charged a switch off request is sent to my tp-link plug
 
+### Requirements 
+pip3 install --user psutil
+pip install requests
+
 ### Note
 request_tokens.py has been ommited as it contains tokens for the api connection
 ```
