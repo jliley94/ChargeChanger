@@ -1,4 +1,6 @@
 #tokens
 request_tokens.py
-__pycache__/request_tokens.cpython-38.pyc
+__pycache__/
 log.csv
+.vs
+.vscode

@@ -14,6 +14,9 @@ def plugRequest(switchState):
     response = requests.post(f"https://eu-wap.tplinkcloud.com/?token={request_tokens.token}", json = json)
     print("Request Sent...")
     statusCode = response.status_code
+    if (statusCode != 200): 
+        #Error occurred
+        statusCode = "Error"
 
     
 battery = psutil.sensors_battery()
