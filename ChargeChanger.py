@@ -3,10 +3,11 @@ import requests
 import request_tokens
 import csv
 import datetime
+import json
 
 debugMode = True
-action = "None"
-statusCode = "None"
+action = "No Action"
+statusCode = "No Request Made"
 
 def plugRequest(switchState):
     json = {"method":"passthrough", "params": {"deviceId": request_tokens.deviceId, "requestData": "{\"system\":{\"set_relay_state\":{\"state\": "+ str(switchState) +" }}}" }}
@@ -14,9 +15,11 @@ def plugRequest(switchState):
     response = requests.post(f"https://eu-wap.tplinkcloud.com/?token={request_tokens.token}", json = json)
     print("Request Sent...")
     statusCode = response.status_code
-    if (statusCode != 200): 
+    if (statusCode != 200 or json.loads(response.text)["error_code"] != 0): 
         #Error occurred
-        statusCode = "Error"
+        statusCode = "Error: " + json.loads(response.text)["msg"]
+    else:
+        statusCode = "Success"
 
     
 battery = psutil.sensors_battery()

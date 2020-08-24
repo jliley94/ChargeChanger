@@ -10,7 +10,7 @@ This solution periodically checks the battery level and charging status of my la
 pip3 install --user psutil
 pip install requests
 
-### Token Generation
+### Account Token Generation
 To get the token required (update monthly)
 POST - https://wap.tplinkcloud.com
 ```
@@ -25,6 +25,16 @@ Body:
  }
 }
 ```
+
+### Device list request
+Post - https://wap.tplinkcloud.com?token={from above request}
+Body:
+```
+{
+    "method":"getDeviceList"
+}
+```
+
 
 ### Note
 request_tokens.py has been omitted as it contains tokens for the api connection
