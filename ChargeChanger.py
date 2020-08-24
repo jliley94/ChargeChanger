@@ -10,14 +10,14 @@ action = "No Action"
 statusCode = "No Request Made"
 
 def plugRequest(switchState):
-    json = {"method":"passthrough", "params": {"deviceId": request_tokens.deviceId, "requestData": "{\"system\":{\"set_relay_state\":{\"state\": "+ str(switchState) +" }}}" }}
     # print(json)
-    response = requests.post(f"https://eu-wap.tplinkcloud.com/?token={request_tokens.token}", json = json)
+    event = "Laptop_battery_on" if (switchState) else "Laptop_battery_off"
+    response = requests.post(f"https://maker.ifttt.com/trigger/{event}/with/key/{request_tokens.webhookId}")
     print("Request Sent...")
     statusCode = response.status_code
-    if (statusCode != 200 or json.loads(response.text)["error_code"] != 0): 
+    if (statusCode != 200): 
         #Error occurred
-        statusCode = "Error: " + json.loads(response.text)["msg"]
+        statusCode = "Error: "
     else:
         statusCode = "Success"
 

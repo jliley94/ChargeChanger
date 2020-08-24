@@ -1,2 +1,2 @@
-"C:/python3/python.exe" "c:/JL/src/External/ChargeChanger/ChargeChanger.py"
+"C:/Python3/python.exe" "c:/JL/src/Python/ChargeChanger/ChargeChanger.py"
 exit
