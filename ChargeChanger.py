@@ -10,18 +10,34 @@ action = "No Action"
 statusCode = "No Request Made"
 
 def plugRequest(switchState):
-    json = {"method":"passthrough", "params": {"deviceId": request_tokens.deviceId, "requestData": "{\"system\":{\"set_relay_state\":{\"state\": "+ str(switchState) +" }}}" }}
-    # print(json)
-    response = requests.post(f"https://eu-wap.tplinkcloud.com/?token={request_tokens.token}", json = json)
-    print("Request Sent...")
+    token = getToken()
+    jsonRequest = {"method":"passthrough", "params": {"deviceId": request_tokens.deviceId, "requestData": "{\"system\":{\"set_relay_state\":{\"state\": "+ str(switchState) +" }}}" }}
+    # print(jsonRequest)
+    request("Plug", jsonRequest, f"https://eu-wap.tplinkcloud.com/?token={token}")
+
+def getToken():
+    token = None
+    jsonRequest = {"method":"login", "params": {"appType": "Kasa_Android", "cloudUserName": "jliley94@gmail.com", "cloudPassword": request_tokens.userPass, "terminalUUID": "e7e88ca8-3582-4b14-b75b-b0d3d2bf9765" }}
+    jsonResponse = request("Token", jsonRequest, "https://wap.tplinkcloud.com")
+
+    if (json.loads(jsonResponse.text)["error_code"] == 0): 
+        #No error occurred
+        token = json.loads(jsonResponse.text)["result"]["token"]
+    return token
+
+def request(requestName, jsonRequest, url):
+    response = requests.post(url, json = jsonRequest)
+    print(f"{requestName} Request Sent...")
     statusCode = response.status_code
     if (statusCode != 200 or json.loads(response.text)["error_code"] != 0): 
         #Error occurred
         statusCode = "Error: " + json.loads(response.text)["msg"]
     else:
         statusCode = "Success"
+    print(statusCode)
+    return response
 
-    
+
 battery = psutil.sensors_battery()
 pluggedIn = battery.power_plugged
 currentCharge = battery.percent
@@ -34,7 +50,7 @@ if (pluggedIn and currentCharge == 100):
     print("Turning off plug")
     action = "Turn Off"
     plugRequest(0)
-elif (not pluggedIn and currentCharge < 70):
+elif (not pluggedIn and currentCharge < 65):
     # plug laptop in
     print("Turning on plug")
     action = "Turn On"

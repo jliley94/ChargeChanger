@@ -2,7 +2,7 @@
 Python script to check battery level and turn on smart plug
 
 ### What is this
-This solution periodically checks the battery level and charging status of my laptop (utilising windows task scheduler to run the batch file)
+This solution periodically checks the battery level and charging status of my laptop (utilising windows task scheduler to run the python script)
 - If the laptop needs charging a switch on request is sent to my tp-link plug
 - If the laptop is fully charged a switch off request is sent to my tp-link plug
 
@@ -11,7 +11,7 @@ pip3 install --user psutil
 pip install requests
 
 ### Account Token Generation
-To get the token required (update monthly)
+To get the token required (updates monthly)
 POST - https://wap.tplinkcloud.com
 ```
 Body:
@@ -43,6 +43,8 @@ import os
 
 token = '' # my account token
 deviceId = '' # my smart plugs device id
+userPass = '' # account password
+
 ```
 
 ### References: 
